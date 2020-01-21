@@ -108,3 +108,42 @@ define-command table-add-row-above %{
     evaluate-commands -draft table-align
     execute-keys "kgi2l"
 }
+
+# interactive editing
+
+define-command table-enable %{
+    hook -group table global NormalIdle .* %{
+        try %{
+            execute-keys -draft "gi<a-k>\|<ret>"
+            # normal mode mappings
+            map window normal <tab> ": table-next-cell<ret>"
+            map window normal <s-tab> ": table-previous-cell<ret>"
+            map window normal o ": table-add-row-below<ret>i"
+            map window normal O ": table-add-row-above<ret>i"
+            # insert mode mappings
+            map window insert <esc> "<esc>: evaluate-commands -draft table-align<ret>"
+            map window insert <tab> "<esc>: table-next-cell<ret>i"
+            map window insert <s-tab> "<esc>: table-previous-cell<ret>i"
+        } catch %{
+            table-remove-mappings
+
+        }
+    }
+}
+
+define-command table-disable %{
+    remove-hooks global table
+    table-remove-mappings
+}
+
+define-command -hidden table-remove-mappings %{
+    # normal mode mappings
+    unmap window normal <tab> ": table-next-cell<ret>"
+    unmap window normal <s-tab> ": table-previous-cell<ret>"
+    unmap window normal o ": table-add-row-below<ret>i"
+    unmap window normal O ": table-add-row-above<ret>i"
+    # insert mode mappings
+    unmap window insert <esc> "<esc>: evaluate-commands -draft table-align<ret>"
+    unmap window insert <tab> "<esc>: table-next-cell<ret>i"
+    unmap window insert <s-tab> "<esc>: table-previous-cell<ret>i"
+}
