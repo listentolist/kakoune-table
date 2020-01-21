@@ -21,11 +21,11 @@ define-command -hidden table-strip %{
     table-select
     # strip minuses
     try %{
-        execute-keys -draft "s\|[^\n]*<ret><a-k>\|-<ret>s-<ret>dgia-<esc>"
+        execute-keys -draft "s^\h*\|-<ret>l<a-l>s[^|]<ret>d"
     }
     # strip whitespaces
     try %{
-        execute-keys -draft "s\|[^\n]*<ret>s\h*\|\h*<ret>s\h<ret>d"
+        execute-keys -draft "s^\h*\|<ret>2l<a-l>s\h*\|\h*|\A\h*<ret>s\h<ret>d"
     }
 }
 
@@ -45,14 +45,19 @@ define-command table-align %{
     table-adjust-number-of-columns
     # prepare the table
     table-strip
+    execute-keys "<a-s><a-K>^\h*\|-<ret>"
     # bars should be surrounded by whitespaces
     try %{
-        execute-keys -draft "<a-s><a-K>^\h*\|-<ret>s\|<ret>a <esc>hi <esc>gihdgld"
+        execute-keys -draft "s\|(?!\s)<ret>a <esc>"
+    }
+    try %{
+        execute-keys -draft "s(?<!\h)\|" "<ret><a-K>^<ret>i <esc>"
     }
     # there should be at least three characters between two bars
     try %{
-        execute-keys -draft "<a-x>s\|[^\n]*<ret>s  \|<ret>i <esc>"
+        execute-keys -draft "s(?<=\|)\h+(?=\|)" "<ret>c   <esc>"
     }
+    table-select
     # align the bars
     execute-keys -draft "s\|<ret>&"
     # replace whitespaces with minuses
