@@ -91,3 +91,20 @@ define-command table-previous-cell %{
         execute-keys '<a-n>l'
     }
 }
+
+# add row
+
+define-command table-add-row-below %{
+    execute-keys "o|<esc>"
+    evaluate-commands -draft table-align
+    try %{
+        execute-keys "<a-k>^.<ret>k"
+    }
+    execute-keys "gi2l"
+}
+
+define-command table-add-row-above %{
+    execute-keys "O|<esc>"
+    evaluate-commands -draft table-align
+    execute-keys "kgi2l"
+}
