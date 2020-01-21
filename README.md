@@ -12,6 +12,17 @@ plug "listentolist/kakoune-table" domain "gitlab.com"
 
 You need to have GNU awk installed.
 
+## Commands
+
+- `table-align`
+- `table-select`
+- `table-add-row-below`
+- `table-add-row-above`
+- `table-enable`
+- `table-disable`
+- `table-next-cell`
+- `table-previous-cell`
+
 ## Usage
 
 If you want to align the table, just do `table-align`. It is only important
@@ -52,3 +63,11 @@ After running `table-align`, you get:
 | aaa     | bbb |   |            |
 | new row |     |   |            |
 ```
+
+## Interactive table editing
+
+There is also an interactive table editing mode, that defines some convenient
+mappings. You can enable and disable it by running `table-enable` and
+`table-disable`. Whenever you leave insert mode by pressing `<esc>` the table
+will be re-aligned. By pressing `<tab>` and `<s-tab>` you can jump from cell to
+cell in insert and normal mode. With `o` and `O` in normal mode you add a row.
