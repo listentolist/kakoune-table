@@ -65,3 +65,29 @@ define-command table-align %{
         execute-keys -draft "<a-x><a-s><a-k>^\h*\|-<ret>s\|[^\n]*<ret>s <ret>r-"
     }
 }
+
+# jump from cell to cell
+ 
+define-command table-next-cell %{
+    evaluate-commands -draft table-align
+    evaluate-commands -save-regs '/' %{
+        set-register '/' '\| '
+        try %{
+            execute-keys -draft "<a-k>\|<ret>"
+            execute-keys "<a-n>"
+        }
+        execute-keys 'nl'
+    }
+}
+
+define-command table-previous-cell %{
+    evaluate-commands -draft table-align
+    evaluate-commands -save-regs '/' %{
+        set-register '/' '\| '
+        try %{
+            execute-keys -draft "<a-?><ret><a-K>\n<ret>"
+            execute-keys "<a-n>"
+        }
+        execute-keys '<a-n>l'
+    }
+}
