@@ -1,13 +1,16 @@
 # Table editor plugin for Kakoune
 
-This plugin provides commands for simple ascii table formatting. 
+This plugin provides commands for simple table formatting. 
 
 ## Installation
 
 If you use plug.kak, just put this into your kakrc:
 
 ```
-plug "listentolist/kakoune-table" domain "gitlab.com"
+plug "listentolist/kakoune-table" domain "gitlab.com" config %{
+    # suggested mapping
+    # map global user t ": evaluate-commands -draft table-align<ret>" -docstring "align table"
+}
 ```
 
 You need to have GNU awk installed.
