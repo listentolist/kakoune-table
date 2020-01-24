@@ -29,20 +29,30 @@ define-command -hidden table-strip %{
     }
 }
 
-define-command -hidden table-adjust-number-of-columns %{
+define-command -hidden table-adjust-number-of-bars %{
     table-select
     # the last character of every line should be a bar
     try %{
         execute-keys -draft "s[^|]\n<ret>ha|"
     }
-    execute-keys "|awk -F'|' '{for (i = NF-1; i < count; i++) $0=$0""|""; print;}' count=" %sh[
-            echo `echo "$kak_selection" | awk -F'|' '{print NF}' | sort -n | awk '{print $NF - 1}' RS='^$'`
-        ] "<ret>"
+    # align bars and \n
+    execute-keys -draft "s\|<ret>&<a-x>s\n<ret>&"
+    # select the longest line
+    execute-keys "<a-x>s\|\n<ret>&<space>"
+    # select all bars except the first one
+    execute-keys "<a-x>s\|<ret>)<a-space>"
+    # add missing bars
+    evaluate-commands -itersel -draft %{
+        execute-keys "h<a-h>"
+        set-register c %val{selection_length}
+        table-select
+        execute-keys "<a-s>gh" %val{reg_c} "lr|"
+    }
 }
 
 define-command table-align %{
-    # make sure that all the rows have the same number of columns
-    table-adjust-number-of-columns
+    # make sure that all the rows have the same number of bars
+    table-adjust-number-of-bars
     # prepare the table
     table-strip
     execute-keys "<a-s><a-K>^\h*\|-<ret>"
