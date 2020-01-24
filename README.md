@@ -13,8 +13,6 @@ plug "listentolist/kakoune-table" domain "gitlab.com" config %{
 }
 ```
 
-You need to have GNU awk installed.
-
 ## Commands
 
 - `table-align`
