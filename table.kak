@@ -5,16 +5,18 @@ define-command table-select %{
     } catch %{
         fail "not a table"
     }
-    set-register / (?:\h*\|[^\n]*\n)+
-    try %{
-        # check if the cursor is at the begin of the buffer
-        execute-keys -draft "<a-C><a-space>"
-        # check if on the first row of the table
-        execute-keys -draft "kgi<a-k>\|<ret>"
-        # jump to begin of the table
-        execute-keys "<a-n>"
+    evaluate-commands -save-regs '/' %{
+        set-register / (?:\h*\|[^\n]*\n)+
+        try %{
+            # check if the cursor is at the begin of the buffer
+            execute-keys -draft "<a-C><a-space>"
+            # check if on the first row of the table
+            execute-keys -draft "kgi<a-k>\|<ret>"
+            # jump to begin of the table
+            execute-keys "<a-n>"
+        }
+        execute-keys "<a-n>n"
     }
-    execute-keys "<a-n>n"
 }
 
 define-command -hidden table-strip %{
@@ -37,13 +39,13 @@ define-command -hidden table-adjust-number-of-bars %{
     }
     # align bars and \n
     # indent is specified by the first line
-    execute-keys -draft "s\|<ret>)<a-&>&<a-x>s\n<ret>&"
+    execute-keys -draft "s\|<ret>1<a-&>&<a-x>s\n<ret>&"
     # select the longest line
     execute-keys "<a-x>s\|\n<ret>&<space>"
     # select all bars except the first one
     execute-keys "<a-x>s\|<ret>)<a-space>"
     # add missing bars
-    evaluate-commands -itersel -draft %{
+    evaluate-commands -itersel -draft -save-regs 'c' %{
         execute-keys "h<a-h>"
         set-register c %val{selection_length}
         table-select
