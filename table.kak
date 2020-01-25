@@ -29,15 +29,6 @@ define-command -hidden table-strip %{
     }
 }
 
-define-command -hidden table-adjust-indent %{
-    table-select
-    evaluate-commands -save-regs 'i' %{
-        # get the indent of the first line and use it for the other ones
-        execute-keys -draft "s\A\h*\|<ret>""iy"
-        execute-keys "s^\h*\|<ret>""ipd"
-    }
-}
-
 define-command -hidden table-adjust-number-of-bars %{
     table-select
     # the last character of every line should be a bar
@@ -45,7 +36,8 @@ define-command -hidden table-adjust-number-of-bars %{
         execute-keys -draft "s[^|]\n<ret>ha|"
     }
     # align bars and \n
-    execute-keys -draft "s\|<ret>&<a-x>s\n<ret>&"
+    # indent is specified by the first line
+    execute-keys -draft "s\|<ret>)<a-&>&<a-x>s\n<ret>&"
     # select the longest line
     execute-keys "<a-x>s\|\n<ret>&<space>"
     # select all bars except the first one
@@ -60,8 +52,6 @@ define-command -hidden table-adjust-number-of-bars %{
 }
 
 define-command table-align %{
-    # the indent of the table is oriented to the first line of the table
-    table-adjust-indent
     # make sure that all the rows have the same number of bars
     table-adjust-number-of-bars
     # prepare the table
