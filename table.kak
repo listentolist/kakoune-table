@@ -115,7 +115,7 @@ define-command table-add-row-below %{
 }
 
 define-command table-add-row-above %{
-    execute-keys "O|<esc>"
+    execute-keys -draft "O|<esc>2X<a-s><a-&>"
     evaluate-commands -draft table-align
     execute-keys "kgi2l"
 }
