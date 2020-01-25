@@ -95,7 +95,7 @@ define-command table-next-cell %{
 
 define-command table-previous-cell %{
     evaluate-commands -draft table-align
-t   evaluate-commands -save-regs '/' %{
+    evaluate-commands -save-regs '/' %{
         set-register '/' '\| '
         try %{
             execute-keys -draft "<a-?><ret><a-K>\n<ret>"
@@ -139,7 +139,6 @@ define-command table-enable %{
             map window insert <s-tab> "<esc>: table-previous-cell<ret>i"
         } catch %{
             table-remove-mappings
-
         }
     }
 }
