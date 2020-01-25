@@ -8,8 +8,12 @@ If you use plug.kak, just put this into your kakrc:
 
 ```
 plug "listentolist/kakoune-table" domain "gitlab.com" config %{
-    # suggested mapping
+    # suggested mappings
+
     # map global user t ": evaluate-commands -draft table-align<ret>" -docstring "align table"
+
+    # map global user t ": table-enable<ret>" -docstring "enable table mode"
+    # map global user T ": table-disable<ret>" -docstring "disable table mode"
 }
 ```
 
@@ -23,6 +27,10 @@ plug "listentolist/kakoune-table" domain "gitlab.com" config %{
 - `table-disable`
 - `table-next-cell`
 - `table-previous-cell`
+- `table-move-column-right`
+- `table-move-column-left`
+- `table-move-row-up`
+- `table-move-row-down`
 
 ## Usage
 
@@ -89,5 +97,7 @@ Running `table-align`:
 There is also an interactive table editing mode, that defines some convenient
 mappings. You can enable and disable it by running `table-enable` and
 `table-disable`. Whenever you leave insert mode by pressing `<esc>` the table
-will be re-aligned. By pressing `<tab>` and `<s-tab>` you can jump from cell to
-cell in insert and normal mode. With `o` and `O` in normal mode you add a row.
+will be re-aligned. By pressing `<tab>` and `<s-tab>` you can jump from cell
+to cell in insert and normal mode. With `o` and `O` in normal mode you add
+a row. By pressing `<a-h>`,`<a-j>`,`<a-k>`,`<a-l>` you can move columns and
+rows both in insert and normal mode.

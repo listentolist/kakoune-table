@@ -122,6 +122,68 @@ define-command table-add-row-above %{
     execute-keys "kgi2l"
 }
 
+# move columns and rows
+
+define-command table-select-column %{
+    evaluate-commands -draft table-align
+    try %{
+        execute-keys "<a-k>\|<ret>h"
+    }
+    try %{
+        execute-keys -draft "<a-K>\n<ret>"
+        execute-keys -draft "<a-h><a-k>\|<ret>"
+    } catch %{
+        fail "not in a table cell"
+    }
+    evaluate-commands -save-regs 'c' %{
+        set-register c %val{cursor_char_column}
+        table-select
+        execute-keys "<a-s>gh" %val{reg_c} "l2h<a-i>|L"
+    }
+}
+
+define-command table-move-column-right %{
+    try %{
+        # check if the cursor is inside the table
+        execute-keys -draft "h<a-h><a-k>\|<ret>"
+        # check if in the last column
+        execute-keys -draft "h2F|<a-K>\n<ret>"
+        evaluate-commands -draft %{
+            execute-keys "hf|l"
+            table-select-column
+            execute-keys "d2<a-f>|;p"
+        }
+    }
+}
+
+define-command table-move-column-left %{
+    try %{
+        # check if in the first column
+        execute-keys -draft "2<a-F>|<a-K>\n<ret>"
+        evaluate-commands -draft %{
+            execute-keys "<a-f>|"
+            table-select-column
+            execute-keys "df|p"
+        }
+    }
+}
+
+define-command table-move-row-up %{
+    try %{
+        execute-keys -draft "<a-C><a-space>"
+        execute-keys -draft "kgi<a-k>\|<ret>"
+        execute-keys -draft "kxdp"
+    }
+}
+
+define-command table-move-row-down %{
+    try %{
+        execute-keys -draft "C<a-space>"
+        execute-keys -draft "jgi<a-k>\|<ret>"
+        execute-keys -draft "jxdkP"
+    }
+}
+
 # interactive editing
 
 define-command table-enable %{
@@ -133,10 +195,18 @@ define-command table-enable %{
             map window normal <s-tab> ": table-previous-cell<ret>"
             map window normal o ": table-add-row-below<ret>i"
             map window normal O ": table-add-row-above<ret>i"
+            map window normal <a-h> ": table-move-column-left<ret>"
+            map window normal <a-l> ": table-move-column-right<ret>"
+            map window normal <a-k> ": table-move-row-up<ret>"
+            map window normal <a-j> ": table-move-row-down<ret>"
             # insert mode mappings
             map window insert <esc> "<esc>: evaluate-commands -draft table-align<ret>"
             map window insert <tab> "<esc>: table-next-cell<ret>i"
             map window insert <s-tab> "<esc>: table-previous-cell<ret>i"
+            map window insert <a-h> ": table-move-column-left<ret>"
+            map window insert <a-l> ": table-move-column-right<ret>"
+            map window insert <a-k> ": table-move-row-up<ret>"
+            map window insert <a-j> ": table-move-row-down<ret>"
         } catch %{
             table-remove-mappings
         }
@@ -154,8 +224,16 @@ define-command -hidden table-remove-mappings %{
     unmap window normal <s-tab> ": table-previous-cell<ret>"
     unmap window normal o ": table-add-row-below<ret>i"
     unmap window normal O ": table-add-row-above<ret>i"
+    unmap window normal <a-h> ": table-move-column-left<ret>"
+    unmap window normal <a-l> ": table-move-column-right<ret>"
+    unmap window normal <a-k> ": table-move-row-up<ret>"
+    unmap window normal <a-j> ": table-move-row-down<ret>"
     # insert mode mappings
     unmap window insert <esc> "<esc>: evaluate-commands -draft table-align<ret>"
     unmap window insert <tab> "<esc>: table-next-cell<ret>i"
     unmap window insert <s-tab> "<esc>: table-previous-cell<ret>i"
+    unmap window insert <a-h> ": table-move-column-left<ret>"
+    unmap window insert <a-l> ": table-move-column-right<ret>"
+    unmap window insert <a-k> ": table-move-row-up<ret>"
+    unmap window insert <a-j> ": table-move-row-down<ret>"
 }
