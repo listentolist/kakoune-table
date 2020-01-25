@@ -39,7 +39,7 @@ Example:
 |
 ```
 
-When you run the `table-align` you get:
+When you run `table-align` you get:
 
 ```
 | a | b | c |
@@ -63,6 +63,25 @@ After running `table-align`, you get:
 |---------|-----|---|------------|
 | aaa     | bbb |   |            |
 | new row |     |   |            |
+```
+
+The indent of the table is specified by the indent of the first line of
+the table:
+
+```
+········| a       | bb  | c | new column |
+····|---------|-----|---|------------|
+| aaa     | bbb |   |            |
+············| new row |     |   |            |
+```
+
+Running `table-align`:
+
+```
+········| a       | bb  | c | new column |
+········|---------|-----|---|------------|
+········| aaa     | bbb |   |            |
+········| new row |     |   |            |
 ```
 
 ## Interactive table editing
