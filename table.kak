@@ -211,11 +211,24 @@ define-command table-enable %{
             table-remove-mappings
         }
     }
+    set-option global table_enabled yes
 }
 
 define-command table-disable %{
     remove-hooks global table
     table-remove-mappings
+    set-option global table_enabled no
+}
+
+define-command table-toggle %{
+    evaluate-commands %sh{
+        if $kak_opt_table_enabled
+        then
+            printf "table-disable"
+        else
+            printf "table-enable"
+        fi
+    }
 }
 
 define-command -hidden table-remove-mappings %{
@@ -237,3 +250,5 @@ define-command -hidden table-remove-mappings %{
     unmap window insert <a-k> ": table-move-row-up<ret>"
     unmap window insert <a-j> ": table-move-row-down<ret>"
 }
+
+declare-option -hidden bool table_enabled no

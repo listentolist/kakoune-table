@@ -14,6 +14,8 @@ plug "listentolist/kakoune-table" domain "gitlab.com" config %{
 
     # map global user t ": table-enable<ret>" -docstring "enable table mode"
     # map global user T ": table-disable<ret>" -docstring "disable table mode"
+    
+    # map global user t ": table-toggle<ret>" -docstring "toggle table mode"
 }
 ```
 
@@ -25,6 +27,7 @@ plug "listentolist/kakoune-table" domain "gitlab.com" config %{
 - `table-add-row-above`
 - `table-enable`
 - `table-disable`
+- `table-toggle`
 - `table-next-cell`
 - `table-previous-cell`
 - `table-move-column-right`
@@ -95,9 +98,9 @@ Running `table-align`:
 ## Interactive table editing
 
 There is also an interactive table editing mode, that defines some convenient
-mappings. You can enable and disable it by running `table-enable` and
-`table-disable`. Whenever you leave insert mode by pressing `<esc>` the table
-will be re-aligned. By pressing `<tab>` and `<s-tab>` you can jump from cell
-to cell in insert and normal mode. With `o` and `O` in normal mode you add
-a row. By pressing `<a-h>`,`<a-j>`,`<a-k>`,`<a-l>` you can move columns and
-rows both in insert and normal mode.
+mappings. You can enable, disable and toggle it by running `table-enable`,
+`table-disable` and `table-toggle`. Whenever you leave insert mode by pressing
+`<esc>` the table will be re-aligned. By pressing `<tab>` and `<s-tab>`
+you can jump from cell to cell in insert and normal mode. With `o` and `O`
+in normal mode you add a row. By pressing `<a-h>`,`<a-j>`,`<a-k>`,`<a-l>`
+you can move columns and rows both in insert and normal mode.
