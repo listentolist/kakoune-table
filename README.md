@@ -16,6 +16,9 @@ plug "listentolist/kakoune-table" domain "gitlab.com" config %{
     # map global user T ": table-disable<ret>" -docstring "disable table mode"
     
     # map global user t ": table-toggle<ret>" -docstring "toggle table mode"
+    
+    # map global user t ": enter-user-mode table<ret>" -docstring "table"
+    # map global user T ": enter-user-mode -lock table<ret>" -docstring "table (lock)"
 }
 ```
 

@@ -251,4 +251,26 @@ define-command -hidden table-remove-mappings %{
     unmap window insert <a-j> ": table-move-row-down<ret>"
 }
 
+# User mode
+
+declare-user-mode table
+
+map global table a ": table-align<ret>" -docstring "align table"
+map global table e ": table-enable<ret>" -docstring "enable table mode"
+map global table d ": table-disable<ret>" -docstring "disable table mode"
+map global table t ": table-toggle<ret>" -docstring "toggle table mode"
+
+map global table l ": table-next-cell<ret>" -docstring "jump to next cell"
+map global table h ": table-previous-cell<ret>" -docstring "jump to previous cell"
+
+map global table <a-k> ": table-move-row-up<ret>" -docstring "move row up"
+map global table <a-j> ": table-move-row-down<ret>" -docstring "move row down"
+map global table <a-l> ": table-move-column-right<ret>" -docstring "move column to the right"
+map global table <a-h> ": table-move-column-left<ret>" -docstring "move column to the left"
+
+map global table s ": table-select<ret>" -docstring "select table"
+map global table c ": table-select-column<ret>" -docstring "select column"
+
+# Options
+
 declare-option -hidden bool table_enabled no
