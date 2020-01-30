@@ -188,8 +188,16 @@ define-command table-move-row-down %{
 
 define-command table-enable %{
     hook -group table global NormalIdle .* %{
+        remove-hooks global table-replace
         try %{
             execute-keys -draft "gi<a-k>\|<ret>"
+            # replace mode inside table cells
+            hook -group table-replace global InsertChar .* %{
+                try %{
+                    execute-keys -draft "<esc>L<a-K>\|<ret>"
+                    execute-keys -draft "<esc>t|;H<a-K>[^\s]<ret>;d"
+                }
+            }
             # normal mode mappings
             map window normal <tab> ": table-next-cell<ret>"
             map window normal <s-tab> ": table-previous-cell<ret>"
@@ -216,6 +224,7 @@ define-command table-enable %{
 
 define-command table-disable %{
     remove-hooks global table
+    remove-hooks global table-replace
     table-remove-mappings
     set-option global table_enabled no
 }
@@ -255,7 +264,7 @@ define-command -hidden table-remove-mappings %{
 
 declare-user-mode table
 
-map global table a ": table-align<ret>" -docstring "align table"
+map global table a ": evaluate-commands -draft table-align<ret>" -docstring "align table"
 map global table e ": table-enable<ret>" -docstring "enable table mode"
 map global table d ": table-disable<ret>" -docstring "disable table mode"
 map global table t ": table-toggle<ret>" -docstring "toggle table mode"
